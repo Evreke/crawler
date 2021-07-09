@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  redis:
+    image: redis:alpine
+    volumes:
+    - ./persistence/redis:/data
+    ports:
+    - "6379:6379"
