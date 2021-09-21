@@ -4,3 +4,4 @@ build
 **.rdb
 **.gml
 persistence
+.env

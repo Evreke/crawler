@@ -1,8 +1,28 @@
 version: "3.9"
 services:
-  redis:
-    image: redis:alpine
-    volumes:
-    - ./persistence/redis:/data
+  app:
+    build: .
+    environment:
+      MONGO_DOCKER_USER: ${MONGO_DOCKER_USER}
+      MONGO_DOCKER_PWD: ${MONGO_DOCKER_PWD}
+      MONGO_DOCKER_DB: ${MONGO_DOCKER_DB}
+
+  mongo:
+    image: bitnami/mongodb:5.0.3
+    restart: always
+    environment:
+      MONGODB_ROOT_USER: ${MONGO_DOCKER_ROOT_USER}
+      MONGODB_ROOT_PASSWORD: ${MONGO_DOCKER_ROOT_PWD}
+      MONGODB_USERNAME: ${MONGO_DOCKER_USER}
+      MONGODB_PASSWORD: ${MONGO_DOCKER_PWD}
+      MONGODB_DATABASE: ${MONGO_DOCKER_DB}
+
+  mongo-express:
+    image: mongo-express
+    restart: always
     ports:
-    - "6379:6379"
+      - "8089:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_DOCKER_ROOT_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_DOCKER_ROOT_PWD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_DOCKER_ROOT_USER}:${MONGO_DOCKER_ROOT_PWD}@mongo:27017
