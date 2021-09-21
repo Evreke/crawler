@@ -1,1 +1,1 @@
-rootProject.name = "ktor-sample1"
+rootProject.name = "crawler"
